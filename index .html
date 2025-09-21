@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>حاسبة سعر صرف ريال سعودي ⇆ ريال يمني | تحويل العملات بدقة</title>
+
+<meta name="description" content="حاسبة سعر الصرف بين الريال السعودي والريال اليمني مع تحديث أسعار الشراء والبيع بسهولة. أدخل المبلغ وسعر الصرف لتحصل على النتيجة بدقة.">
+<meta name="keywords" content="حاسبة سعر الصرف, تحويل عملات, ريال سعودي, ريال يمني, سعر الصرف اليوم, شراء عملة, بيع عملة">
+<meta name="robots" content="index, follow" />
+
+<style>
+  body {
+    font-family: 'Tahoma', sans-serif;
+    background: linear-gradient(135deg, #f8f9fa, #e3e8ee);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  main.calculator {
+    background: #fff;
+    padding: 20px 25px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    width: 360px;
+    text-align: center;
+  }
+  header h1 {
+    margin-bottom: 15px;
+    color: #333;
+    font-size: 24px;
+  }
+  label {
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
+    text-align: right;
+  }
+  select, input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+  }
+  button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    background: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+  }
+  button:hover {
+    background: #0056b3;
+  }
+  .result {
+    margin-top: 15px;
+    font-size: 20px;
+    color: #28a745;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+<main class="calculator" role="main" aria-label="حاسبة سعر الصرف بين ريال سعودي و ريال يمني">
+  <header>
+    <h1>حاسبة سعر صرف ريال سعودي ⇆ ريال يمني</h1>
+  </header>
+
+  <label for="direction">من ⇆ إلى:</label>
+  <select id="direction" aria-describedby="directionHelp" aria-required="true">
+    <option value="sar_to_yer">سعودي → يمني</option>
+    <option value="yer_to_sar">يمني → سعودي</option>
+  </select>
+  <small id="directionHelp" style="text-align:right; display:block; color:#666; margin-top:2px;">اختر اتجاه التحويل</small>
+
+  <label for="operation">اختر العملية (شراء أو بيع):</label>
+  <select id="operation" aria-describedby="operationHelp" aria-required="true">
+    <option value="buy">شراء</option>
+    <option value="sell">بيع</option>
+  </select>
+  <small id="operationHelp" style="text-align:right; display:block; color:#666; margin-top:2px;">اختر نوع سعر الصرف المطلوب</small>
+
+  <label for="amount">المبلغ:</label>
+  <input type="number" id="amount" aria-required="true" placeholder="أدخل المبلغ" min="0" step="any" />
+
+  <label for="buyRate">سعر الشراء:</label>
+  <input type="number" id="buyRate" value="88" placeholder="مثال: 425" min="0" step="any" aria-required="true" />
+
+  <label for="sellRate">سعر البيع:</label>
+  <input type="number" id="sellRate" value="420" placeholder="مثال: 420" min="0" step="any" aria-required="true" />
+
+  <button onclick="calculate()" aria-label="احسب سعر الصرف">احسب</button>
+
+  <div class="result" id="result" role="region" aria-live="polite" aria-atomic="true"></div>
+</main>
+
+<script>
+function calculate() {
+  const direction = document.getElementById('direction').value;
+  const operation = document.getElementById('operation').value;
+  const amount = parseFloat(document.getElementById('amount').value);
+  const buyRate = parseFloat(document.getElementById('buyRate').value);
+  const sellRate = parseFloat(document.getElementById('sellRate').value);
+  const resultDiv = document.getElementById('result');
+
+  if (isNaN(amount) || amount <= 0) {
+    resultDiv.style.color = 'red';
+    resultDiv.textContent = 'الرجاء إدخال مبلغ صالح أكبر من صفر.';
+    return;
+  }
+  if (isNaN(buyRate) || buyRate <= 0 || isNaN(sellRate) || sellRate <= 0) {
+    resultDiv.style.color = 'red';
+    resultDiv.textContent = 'الرجاء إدخال أسعار صرف صحيحة أكبر من صفر.';
+    return;
+  }
+
+  let rate = operation === 'buy' ? buyRate : sellRate;
+  let result = 0;
+
+  if (direction === 'sar_to_yer') {
+    result = amount * rate;
+  } else {
+    result = amount / rate;
+  }
+
+  resultDiv.style.color = '#28a745';
+  resultDiv.textContent = `النتيجة: ${result.toLocaleString(undefined, {maximumFractionDigits:2})} ريال`;
+}
+</script>
+</body>
+</html>
